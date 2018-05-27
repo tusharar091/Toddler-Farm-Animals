@@ -3,11 +3,15 @@ var newSelf=this;
 var GameState={
     preload :function(){
         this.load.image('bg','assets/images/background.png');
-        this.load.image('chicken','assets/images/chicken.png');
-        this.load.image('horse','assets/images/horse.png');
-        this.load.image('sheep','assets/images/sheep3.png');
+//        this.load.image('chicken','assets/images/chicken.png');
+//        this.load.image('horse','assets/images/horse.png');
+//        this.load.image('sheep','assets/images/sheep3.png');
         this.load.image('arrow','assets/images/arrow.png');
-        this.load.image('pig','assets/images/pig.png');
+        
+        this.load.spritesheet('pig','assets/images/pig_spritesheet.png',297,200,3);
+        this.load.spritesheet('chicken','assets/images/chicken_spritesheet.png',131,200,3);
+        this.load.spritesheet('horse','assets/images/horse_spritesheet.png',212,200,3);
+        this.load.spritesheet('sheep','assets/images/sheep_spritesheet.png',244,200,3);
 
 
         
@@ -53,9 +57,14 @@ var GameState={
         var animal;
         //iterating over animal data to produce a set of sprites by using their kry value which represents the alias for the path they belong to
         animalData.forEach(function(element){
-            animal=self.animals.create(-1000,self.game.world.centerY,element.key);
+            
+            // 0 represents the first frame in spritesheet
+            animal=self.animals.create(-1000,self.game.world.centerY,element.key,0);
             animal.anchor.setTo(0.5);
             animal.customParams={text :  element.text};
+            
+            //adding animation to the spritesheet, 3 represents number of sprites in spritesheets, false -  no repetition
+            animal.animations.add('animation',[0,1,2,1,0,1],3,false);
             animal.inputEnabled=true;
             animal.input.pixelPerfectClick=true;
             animal.events.onInputDown.add(self.animateAnimal,self);
@@ -149,7 +158,8 @@ var GameState={
     
     animateAnimal :function(sprite,event)
     {
-        console.log('animate animal');
+        //playing sprite-sheet animation
+        sprite.play('animation');
     }
     
 };
