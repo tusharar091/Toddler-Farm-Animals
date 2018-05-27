@@ -1,4 +1,5 @@
 var game = new Phaser.Game(640,360,Phaser.AUTO);
+var newSelf=this;
 var GameState={
     preload :function(){
         this.load.image('bg','assets/images/background.png');
@@ -14,13 +15,7 @@ var GameState={
     create:function(){
         this.background=this.game.add.sprite(0,0,'bg');
         
-//        this.pig=this.game.add.sprite(this.game.world.centerX,this.game.world.centerY,'pig');
-//        this.pig.anchor.setTo(0.5,0.5);
-//        
-//        //userInput for pig
-//        this.pig.inputEnabled=true;
-//        this.pig.input.pixelPerfectClick=true;
-//        this.pig.events.onInputDown.add(this.animateAnimal,this);
+
         
         //right arrow
         this.rightArrow=this.game.add.sprite(580,this.game.world.centerY,'arrow');
@@ -85,6 +80,13 @@ var GameState={
     },
     switchAnimal : function(sprite,event)
     {
+       //Boolean to check if current animal is moving or not and while it is in transition this fucntion will return false so as to block arrows while it is in transition.
+        if(this.isMoving)
+            return false;
+        
+        //initialise it to true while the animal is in transition
+        this.isMoving=true;
+        
         /* newVariable- variable to hold the newAnimal which is gonna come into the scene either from left or right
            endX- it is going to hold the future position of the current element i.e position out of the game window
            */
@@ -93,18 +95,54 @@ var GameState={
         if(sprite.customParams.direction>0)
             {
                 newAnimal=this.animals.next();
+                newAnimal.position.x=0-newAnimal.width/2;
                 endX=640+this.currentAnimal.width*0.5;
+                sprite.alpha=0;
+                
+                //disabling ledtArrow when in transition
+                this.leftArrow.alpha=0;
             }
         //if left arrow is clicked
         else
             {
                 newAnimal=this.animals.previous();
+                newAnimal.position.x=640+newAnimal.width/2;
                 endX=0-this.currentAnimal.width*0.5;
+                sprite.alpha=0;
+                
+                //disabling right arrow when in transition
+                this.rightArrow.alpha=0;
             }
-        // moving current element out of the scene
-        this.currentAnimal.position.set(endX,this.game.world.centerY);
-        // moving new element into the scene at the center
-        newAnimal.position.set(game.world.centerX,game.world.centerY);
+        
+        //add.tween adds a new animation to the newAnimal over a duration of 1s(1000 ms) in which it translates frame by frame to the final position
+        var newAnimalMovement=game.add.tween(newAnimal);
+        
+        // when the transition is completed the boolean becomes false again and both arrows are enabled
+        newAnimalMovement.onComplete.add(function()
+        {
+            this.isMoving=false;
+            // re enabling the sprites again
+            if(sprite.customParams.direction>0)
+                {
+                    sprite.alpha=1;
+                    this.leftArrow.alpha=1;
+                }
+            else{
+                sprite.alpha=1;
+                this.rightArrow.alpha=1;
+            }
+        },this)
+        
+        
+        //final position i.e center of the screen with duration 1000ms
+        newAnimalMovement.to({x: game.world.centerX},1000);
+        
+        var currentAnimalMovement =game.add.tween(this.currentAnimal);
+        currentAnimalMovement.to({x: endX});
+        currentAnimalMovement.start();
+        
+        //starting the animation 
+        newAnimalMovement.start();
         // making newAnimal as current
         this.currentAnimal=newAnimal;
     },
