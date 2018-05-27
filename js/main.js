@@ -32,6 +32,11 @@ var GameState={
         this.chicken.scale.setTo(2,1);
         this.horse=this.game.add.sprite(120,10,'horse');
         this.horse.scale.setTo(0.5);
+        this.pig=this.game.add.sprite(500,300,'pig');
+        //centering the anchor point
+        this.pig.anchor.setTo(0.5);
+        //flipping the image w.r.t to y-axis
+        this.pig.scale.setTo(-1,1);
     },
     //called every frame and is used to make the gameObjects in action
     update:function()
