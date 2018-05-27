@@ -13,7 +13,7 @@ var GameState={
     create:function(){
         this.background=this.game.add.sprite(0,0,'bg');
         this.chicken=this.game.add.sprite(this.game.world.centerX,this.game.world.centerY,'chicken');
-        this.chicken.anchor.setTo(0.5,0.5)
+        this.chicken.anchor.setTo(0.5);
     },
     update:function()
     {
