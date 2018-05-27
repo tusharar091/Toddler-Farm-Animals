@@ -14,6 +14,9 @@ var GameState={
         this.background=this.game.add.sprite(0,0,'bg');
         this.chicken=this.game.add.sprite(this.game.world.centerX,this.game.world.centerY,'chicken');
         this.chicken.anchor.setTo(0.5);
+        this.chicken.scale.setTo(2,1);
+        this.horse=this.game.add.sprite(120,10,'horse');
+        this.horse.scale.setTo(0.5);
     },
     update:function()
     {
