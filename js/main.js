@@ -85,19 +85,27 @@ var GameState={
     },
     switchAnimal : function(sprite,event)
     {
+        /* newVariable- variable to hold the newAnimal which is gonna come into the scene either from left or right
+           endX- it is going to hold the future position of the current element i.e position out of the game window
+           */
         var newAnimal, endX;
+        //if right arrow is clicked
         if(sprite.customParams.direction>0)
             {
                 newAnimal=this.animals.next();
                 endX=640+this.currentAnimal.width*0.5;
             }
+        //if left arrow is clicked
         else
             {
                 newAnimal=this.animals.previous();
                 endX=0-this.currentAnimal.width*0.5;
             }
+        // moving current element out of the scene
         this.currentAnimal.position.set(endX,this.game.world.centerY);
+        // moving new element into the scene at the center
         newAnimal.position.set(game.world.centerX,game.world.centerY);
+        // making newAnimal as current
         this.currentAnimal=newAnimal;
     },
     
