@@ -8,10 +8,19 @@ var GameState={
 //        this.load.image('sheep','assets/images/sheep3.png');
         this.load.image('arrow','assets/images/arrow.png');
         
+        //loading spritesheets
         this.load.spritesheet('pig','assets/images/pig_spritesheet.png',297,200,3);
         this.load.spritesheet('chicken','assets/images/chicken_spritesheet.png',131,200,3);
         this.load.spritesheet('horse','assets/images/horse_spritesheet.png',212,200,3);
         this.load.spritesheet('sheep','assets/images/sheep_spritesheet.png',244,200,3);
+        
+        //loading audio files
+        
+        this.load.audio('pigAudio',['assets/audio/pig.ogg','assets/audio/pig.mp3']);
+        this.load.audio('chickenAudio',['assets/audio/chicken.ogg','assets/audio/chicken.mp3']);
+        this.load.audio('horseAudio',['assets/audio/horse.ogg','assets/audio/horse.mp3']);
+        this.load.audio('sheepAudio',['assets/audio/sheep.ogg','assets/audio/sheep.mp3']);
+        
 
 
         
@@ -48,7 +57,8 @@ var GameState={
 
         this.leftArrow.customParams= {direction: -1};
         
-        var animalData=[{key:'chicken',text:'CHICKEN'},{key:'pig',text:'PIG'},{key:'horse',text:'HORSE'},{key:'sheep',text:'SHEEP'}];
+        //adding sprite and audio data in array of animals
+        var animalData=[{key:'chicken',text:'CHICKEN',audio:'chickenAudio'},{key:'pig',text:'PIG',audio:'pigAudio'},{key:'horse',text:'HORSE',audio: 'horseAudio'},{key:'sheep',text:'SHEEP', audio: 'sheepAudio'}];
         
         //creating a group named animals
         this.animals=this.game.add.group();
@@ -61,7 +71,9 @@ var GameState={
             // 0 represents the first frame in spritesheet
             animal=self.animals.create(-1000,self.game.world.centerY,element.key,0);
             animal.anchor.setTo(0.5);
-            animal.customParams={text :  element.text};
+            
+            //adding audio to each of the animal as customParams audio key from animalData array
+            animal.customParams={text :  element.text, sound : game.add.audio(element.audio)};
             
             //adding animation to the spritesheet, 3 represents number of sprites in spritesheets, false -  no repetition
             animal.animations.add('animation',[0,1,2,1,0,1],3,false);
@@ -77,6 +89,7 @@ var GameState={
         this.currentAnimal=this.animals.next();
         
         this.currentAnimal.position.set(game.world.centerX,game.world.centerY);
+        this.showText(this.currentAnimal);
         
         
         
@@ -140,6 +153,8 @@ var GameState={
                 sprite.alpha=1;
                 this.rightArrow.alpha=1;
             }
+                    this.showText(newAnimal);
+
         },this)
         
         
@@ -160,6 +175,9 @@ var GameState={
     {
         //playing sprite-sheet animation
         sprite.play('animation');
+        
+        //playing audio associated with each of the sprite 
+        sprite.customParams.sound.play();
     }
     
 };
