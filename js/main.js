@@ -21,6 +21,9 @@ var GameState={
     },
     //called after the execution of preload function and is used to create GameObjects from the loaded assets
     create:function(){
+        this.scale.scaleMode=Phaser.ScaleManager.SHOW_ALL;
+        this.scale.pageAlignHorizontally=true;
+        this.scale.pageAlignVertically=true;
         /*game.add.sprite() adds a sprite to the game scene and returns a var(e.g -background) 
         which can be used to manipulate properties associated with it
         */
