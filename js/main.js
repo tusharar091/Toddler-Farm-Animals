@@ -37,11 +37,17 @@ var GameState={
         this.pig.anchor.setTo(0.5);
         //flipping the image w.r.t to y-axis
         this.pig.scale.setTo(-1,1);
+        this.sheep=this.game.add.sprite(80,200,'sheep');
+        this.sheep.anchor.setTo(0.5);
+        this.sheep.scale.setTo(0.5);
+        //rotating the sheep.png 45 degrees anti-clockwise
+        this.sheep.angle=-45;
     },
     //called every frame and is used to make the gameObjects in action
     update:function()
     {
-        
+     //constantly rotating the image by increasing angle 0.5 every frame.
+        this.sheep.angle+=0.5;
     }
     
 };
