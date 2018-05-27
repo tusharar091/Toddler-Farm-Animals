@@ -69,7 +69,9 @@ var GameState={
             
             
         });
+        //animals.next() gives the next element in the group starting with second element which is next to the first element.
         this.currentAnimal=this.animals.next();
+        
         this.currentAnimal.position.set(game.world.centerX,game.world.centerY);
         
         
@@ -83,7 +85,20 @@ var GameState={
     },
     switchAnimal : function(sprite,event)
     {
-        console.log('move animal');
+        var newAnimal, endX;
+        if(sprite.customParams.direction>0)
+            {
+                newAnimal=this.animals.next();
+                endX=640+this.currentAnimal.width*0.5;
+            }
+        else
+            {
+                newAnimal=this.animals.previous();
+                endX=0-this.currentAnimal.width*0.5;
+            }
+        this.currentAnimal.position.set(endX,this.game.world.centerY);
+        newAnimal.position.set(game.world.centerX,game.world.centerY);
+        this.currentAnimal=newAnimal;
     },
     
     animateAnimal :function(sprite,event)
