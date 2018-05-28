@@ -1,5 +1,4 @@
 var game = new Phaser.Game(640,360,Phaser.AUTO);
-var newSelf=this;
 var GameState={
     preload :function(){
         this.load.image('bg','assets/images/background.png');
@@ -9,6 +8,7 @@ var GameState={
         this.load.image('arrow','assets/images/arrow.png');
         
         //loading spritesheets
+        
         this.load.spritesheet('pig','assets/images/pig_spritesheet.png',297,200,3);
         this.load.spritesheet('chicken','assets/images/chicken_spritesheet.png',131,200,3);
         this.load.spritesheet('horse','assets/images/horse_spritesheet.png',212,200,3);
@@ -89,17 +89,19 @@ var GameState={
         this.currentAnimal=this.animals.next();
         
         this.currentAnimal.position.set(game.world.centerX,game.world.centerY);
+        
+        //Text for current animal
         this.showText(this.currentAnimal);
         
         
         
-        
-        
     },
+    
     update:function()
     {
         
     },
+    
     switchAnimal : function(sprite,event)
     {
        //Boolean to check if current animal is moving or not and while it is in transition this fucntion will return false so as to block arrows while it is in transition.
@@ -109,6 +111,11 @@ var GameState={
         //initialise it to true while the animal is in transition
         this.isMoving=true;
         
+        this.currentAnimal.input.enabled=false;
+        
+        
+        
+        this.animalText.visible=false;
         /* newVariable- variable to hold the newAnimal which is gonna come into the scene either from left or right
            endX- it is going to hold the future position of the current element i.e position out of the game window
            */
@@ -119,6 +126,9 @@ var GameState={
                 newAnimal=this.animals.next();
                 newAnimal.position.x=0-newAnimal.width/2;
                 endX=640+this.currentAnimal.width*0.5;
+                
+                //disabling input to animal while in transition
+                newAnimal.input.enabled=false;
                 sprite.alpha=0;
                 
                 //disabling ledtArrow when in transition
@@ -130,6 +140,7 @@ var GameState={
                 newAnimal=this.animals.previous();
                 newAnimal.position.x=640+newAnimal.width/2;
                 endX=0-this.currentAnimal.width*0.5;
+                
                 sprite.alpha=0;
                 
                 //disabling right arrow when in transition
@@ -153,7 +164,11 @@ var GameState={
                 sprite.alpha=1;
                 this.rightArrow.alpha=1;
             }
-                    this.showText(newAnimal);
+            
+           this.showText(newAnimal);
+            //enabling input to animal while in transition
+                this.currentAnimal.input.enabled=true;
+                    
 
         },this)
         
@@ -178,6 +193,25 @@ var GameState={
         
         //playing audio associated with each of the sprite 
         sprite.customParams.sound.play();
+    },
+    
+    
+    showText :function(animal)
+    {
+        var style={
+            font : 'bold 30pt Comic Sans MS',
+            fill : '#006699',
+            align : 'center',
+            
+        };
+        if(!this.animalText)
+            {
+                this.animalText=this.game.add.text(this.game.world.centerX, this.game.height*0.85,'',style);
+                this.animalText.anchor.setTo(0.5);
+            }
+        
+        this.animalText.setText(animal.customParams.text);
+        this.animalText.visible=true;
     }
     
 };
