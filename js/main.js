@@ -1,10 +1,9 @@
 var game = new Phaser.Game(640,360,Phaser.AUTO);
 var GameState={
     preload :function(){
+        
+        //loading images
         this.load.image('bg','assets/images/background.png');
-//        this.load.image('chicken','assets/images/chicken.png');
-//        this.load.image('horse','assets/images/horse.png');
-//        this.load.image('sheep','assets/images/sheep3.png');
         this.load.image('arrow','assets/images/arrow.png');
         
         //loading spritesheets
@@ -104,7 +103,9 @@ var GameState={
     
     switchAnimal : function(sprite,event)
     {
-       //Boolean to check if current animal is moving or not and while it is in transition this fucntion will return false so as to block arrows while it is in transition.
+       /* Boolean to check if current animal is moving or not and while it is in transition this 
+        fucntion will return false so as to block arrows while it is in transition.
+        */
         if(this.isMoving)
             return false;
         
