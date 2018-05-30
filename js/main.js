@@ -79,10 +79,6 @@ var GameState={
             animal.inputEnabled=true;
             animal.input.pixelPerfectClick=true;
             animal.events.onInputDown.add(self.animateAnimal,self);
-        
-            
-            
-            
         });
         //animals.next() gives the next element in the group starting with second element which is next to the first element.
         this.currentAnimal=this.animals.next();
@@ -103,6 +99,7 @@ var GameState={
     
     switchAnimal : function(sprite,event)
     {
+        
        /* Boolean to check if current animal is moving or not and while it is in transition this 
         fucntion will return false so as to block arrows while it is in transition.
         */
@@ -156,18 +153,11 @@ var GameState={
         {
             this.isMoving=false;
             // re enabling the sprites again
-            if(sprite.customParams.direction>0)
-                {
-                    sprite.alpha=1;
-                    this.leftArrow.alpha=1;
-                }
-            else{
-                sprite.alpha=1;
-                this.rightArrow.alpha=1;
-            }
+            this.rightArrow.alpha=1;
+            this.leftArrow.alpha=1;
             
            this.showText(newAnimal);
-            //enabling input to animal while in transition
+            //enabling input to animal when transition ends
                 this.currentAnimal.input.enabled=true;
                     
 
