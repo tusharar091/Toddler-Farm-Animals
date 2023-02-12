@@ -131,6 +131,7 @@ var GameState = {
             newAnimal.position.x = 640 + newAnimal.width / 2;
             endX = 0 - this.currentAnimal.width * 0.5;
 
+            newAnimal.input.enabled = false;
             sprite.alpha = 0;
 
             //disabling right arrow when in transition
