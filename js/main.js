@@ -92,10 +92,6 @@ var GameState = {
 
     },
 
-    update: function () {
-
-    },
-
     switchAnimal: function (sprite, event) {
 
         /* Boolean to check if current animal is moving or not and while it is in transition this 
